@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 import ChatMessage from './Components/ChatMessage';
 import Signup from './Components/Signup';
 import ChatApp from './Components/ChatApp';
+import Config from './config'
+
+
 
 // import { default as Chatkit } from '@pusher/chatkit-server';
 
@@ -21,30 +24,26 @@ class App extends Component {
       currentView: 'signup'
     }
     this.changeView = this.changeView.bind(this);
-    this.createUser = this.createUser.bind(this);
+    this.login = this.login.bind(this);
   }
-  createUser(username) {
-    chatkit.createUser({
-      id: username,
-      name: username,
+
+  login(username) {
+    fetch(`${Config.SERVER_LOCATION}/login`, {
+      method: 'POST',
+      body: JSON.stringify({ userId: username }), // data can be `string` or {object}!
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then( response => response.json())
+    .catch( error => console.log(error))
+    .then( response => {
+
+      this.setState({
+        currentUsername: username,
+        currentId: username,
+        currentView: 'chatApp'
+      })
     })
-      .then((currentUser) => {
-        this.setState({
-          currentUsername: username,
-          currentId: username,
-          currentView: 'chatApp'
-        })
-      }).catch((err) => {
-        if (err.status === 400) {
-          this.setState({
-            currentUsername: username,
-            currentId: username,
-            currentView: 'chatApp'
-          })
-        } else {
-          console.log(err.status);
-        }
-      });
   }
 
   changeView(view) {
@@ -59,7 +58,7 @@ class App extends Component {
     if (this.state.currentView === "ChatMessage") {
       view = <ChatMessage changeView={this.changeView} />
     } else if (this.state.currentView === "signup") {
-      view = <Signup onSubmit={this.createUser} />
+      view = <Signup onSubmit={this.login} />
     } else if (this.state.currentView === "chatApp") {
       view = <ChatApp currentId={this.state.currentId} />
     }

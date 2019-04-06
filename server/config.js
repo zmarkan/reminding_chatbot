@@ -1,0 +1,5 @@
+module.exports = {
+    CHATKIT_INSTANCE_ID: "v1:us1:6d6aa2bf-c2be-4620-8430-52605b28fa1a",
+    CHATKIT_KEY: "679244cf-8719-4396-be52-bcea6a35b085:DzITw1DSrok2PnaA6RlyOMapqZ8XUI4RGlIWSgMqBIE=",
+    ZENATON_ID: "ZENATON_ID",
+}
