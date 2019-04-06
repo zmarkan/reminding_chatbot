@@ -6,8 +6,8 @@ class MessageList extends Component {
             <ul className="message-list">
                 {this.props.messages.map((message, index) => (
                     <li key={index}>
-                        <h4 className="message-sender">{message.senderId}</h4>
-                        <p className="message-text">{message.text}</p>
+                        <h4 className="message-sender">{message.sender.name}</h4>
+                        <p className="message-text">{message.parts[0].payload.content}</p>
                     </li>
                 ))}
                 <li></li>

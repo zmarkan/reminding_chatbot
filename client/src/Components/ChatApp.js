@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { ChatManager, TokenProvider } from '@pusher/chatkit-client';
 import Input from './Input';
 import MessageList from './MessageList';
+import Config from '../config'
 
 class ChatApp extends Component {
     constructor(props) {
         super(props);
         this.state = {
             currentUser: null,
-            currentRoom: { users: [] },
+            currentRoom: null,
             messages: [],
             users: []
         }
@@ -17,35 +18,35 @@ class ChatApp extends Component {
 
     componentDidMount() {
         const chatManager = new ChatManager({
-            instanceLocator: "v1:us1:4ace9fce-cceb-45a5-8e41-d08851413195",
+            instanceLocator: `${Config.CHATKIT_INSTANCE_LOCATOR}`,
             userId: this.props.currentId,
             tokenProvider: new TokenProvider({
-                url: "https://us1.pusherplatform.io/services/chatkit_token_provider/v1/4ace9fce-cceb-45a5-8e41-d08851413195/token"
+                url: `${Config.SERVER_LOCATION}/auth`
             })
         })
 
         chatManager
             .connect()
             .then(currentUser => {
-                this.setState({ currentUser: currentUser })
+                
+                console.log(currentUser.rooms)
 
-                return currentUser.subscribeToRoom({
-                    roomId: "17181105",
-                    messageLimit: 100,
-                    hooks: {
-                        onMessage: message => {
-                            this.setState({
-                                messages: [...this.state.messages, message],
-                            })
-                        },
-                    }
-                })
-            })
-            .then(currentRoom => {
-                this.setState({
-                    currentRoom,
-                    users: currentRoom.userIds
-                })
+                this.setState({ currentUser: currentUser })
+                if (currentUser.rooms.length >= 1) {
+                    this.setState({ currentRoom: currentUser.rooms[0]})
+                    currentUser.subscribeToRoomMultipart({
+                        roomId: this.state.currentRoom.id,
+                        hooks: {
+                            onMessage: message => {
+                                console.log(message)
+                                this.setState({
+                                    messages: [...this.state.messages, message],
+                                })
+                            }
+                        }
+                    })
+                }
+                else console.log("No rooms!")
             })
             .catch(error => console.log(error))
         }
@@ -53,7 +54,7 @@ class ChatApp extends Component {
 
     addMessage(text) {
         console.log(this.state);
-        this.state.currentUser.sendMessage({
+        this.state.currentUser.sendSimpleMessage({
             text,
             roomId: this.state.currentRoom.id
         })
@@ -63,7 +64,7 @@ class ChatApp extends Component {
     render() {
         return (
             <div>
-                <h2 className="header">Let's Talk</h2>
+                <h2 className="header">{ this.state.currentRoom ? this.state.currentRoom.name : "Let's Talk"}</h2>
                 <MessageList messages={this.state.messages} />
                 <Input className="input-field" onSubmit={this.addMessage} />
             </div>
