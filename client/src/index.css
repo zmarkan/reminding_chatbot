@@ -55,9 +55,9 @@ body {
 }
 
 .App {
-  position: fixed;
-  right: 10px;
-  bottom: 0;
+  position: absolute;
+  top: 10%;
+  left: 30%;
   width: 350px;
   border:1px solid #ccc;
 }

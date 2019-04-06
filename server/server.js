@@ -14,9 +14,16 @@ const app = express()
 app.use(bodyParser.json())
 app.use(cors())
 
+
+//Webhook handling and Zenaton reminder dispatching 🚀
+app.post("/message", (req, res) => {
+
+
+})
+
 //Login & user management for Chatkit
 app.post("/login", (req, res) => {
-
+    
     let { userId } = req.body
 
     chatkit.getUser({id: userId})
@@ -46,19 +53,15 @@ app.post("/login", (req, res) => {
     })
 })
 
-app.post("/token", (req, res) => {
+//Chatkit auth endpoint
+app.post("/auth", (req, res) => {
+    const authData = chatkit.authenticate({
+        userId: req.query.user_id
+    });
 
-    
-
+    res.status(authData.status)
+        .send(authData.body);
 })
-
-//WebHook
-app.post("/message", (req, res) => {
-
-
-})
-
-
 
 app.listen(4000, () => {
     console.log("Server listening at http://localhost:4000")

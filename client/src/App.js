@@ -5,16 +5,6 @@ import Signup from './Components/Signup';
 import ChatApp from './Components/ChatApp';
 import Config from './config'
 
-
-
-// import { default as Chatkit } from '@pusher/chatkit-server';
-
-// const chatkit = new Chatkit({
-//   instanceLocator: "v1:us1:6d6aa2bf-c2be-4620-8430-52605b28fa1a",
-//   key: "5f6dcc12-f6a9-47b3-ac8e-95d0c0fa93fa:HHeggaTeK/0/TUYPyj4I5lvaL7utAZXsIa7fiXIQOO8="
-// })
-
-
 class App extends Component {
   constructor(props) {
     super(props);
