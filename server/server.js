@@ -44,7 +44,7 @@ app.post("/message", (req, res) => {
                 .then(() => {
 
               chatkit.sendSimpleMessage({
-                roomId: this.reminderDetails.roomId,
+                roomId: reminderDetails.roomId,
                 userId: "reminder_bot",
                 text: `Excellent! I scheduled your reminder! You can cancel it at any time by messaging cancel ${
                   reminderDetails.messageId

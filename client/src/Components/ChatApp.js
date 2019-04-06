@@ -36,6 +36,7 @@ class ChatApp extends Component {
                     this.setState({ currentRoom: currentUser.rooms[0]})
                     currentUser.subscribeToRoomMultipart({
                         roomId: this.state.currentRoom.id,
+                        messageLimit: 10,
                         hooks: {
                             onMessage: message => {
                                 console.log(message)

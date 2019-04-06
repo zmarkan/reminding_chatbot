@@ -1,4 +1,5 @@
 const { Task } = require("zenaton")
+const Chatkit = require("@pusher/chatkit-server")
 
 module.exports = Task("SendReminderTask", {
 
@@ -8,7 +9,12 @@ module.exports = Task("SendReminderTask", {
     },
 
     async handle(){
-        
+
+        const chatkit = new Chatkit.default({
+          instanceLocator: process.env.CHATKIT_INSTANCE_ID,
+          key: process.env.CHATKIT_KEY
+        })
+
         chatkit.sendSimpleMessage({
           roomId: this.reminderDetails.roomId,
           userId: "reminder_bot",
