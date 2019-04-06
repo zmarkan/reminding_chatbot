@@ -8,7 +8,8 @@ module.exports = Workflow("remind_workflow", {
   },
 
   async handle() {
-    await new Wait().seconds(this.reminderDetails.duration).execute()
+    await new Wait().seconds(parseInt(this.reminderDetails.command.duration)).execute()
+
     await new SendReminder(
       this.reminderDetails,
       this.chatkit
