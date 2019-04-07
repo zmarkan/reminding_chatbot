@@ -13,8 +13,4 @@ module.exports = Workflow("remind_workflow", {
       this.reminderDetails,
     ).execute()
   },
-
-  id() {
-    return this.reminderDetails.messageId
-  }
 })
