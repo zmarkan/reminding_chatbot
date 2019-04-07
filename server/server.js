@@ -9,9 +9,24 @@ const config = require("./config")
 const createReminder = require("./reminder")
 
 const chatkit = new Chatkit.default({
-  instanceLocator: process.env.CHATKIT_INSTANCE_ID,
+  instanceLocator: process.env.CHATKIT_INSTANCE_LOCATOR,
   key: process.env.CHATKIT_KEY
 })
+
+chatkit.getUser({ id: 'reminder_bot' })
+    .then(user => {
+      console.log("reminder_bot user exists, continuing.")
+    })
+    .catch(error => {
+      if (error.error === "services/chatkit/not_found/user_not_found") {
+        chatkit
+          .createUser({
+            id: "reminder_bot",
+            name: "🤖"
+          })
+          .then("reminder_bot user didn't exist, so I created it.")
+        }
+      })
 
 const app = express()
 app.use(bodyParser.json())
@@ -69,17 +84,7 @@ app.post("/message", (req, res) => {
         }
   }
 
-
   res.sendStatus(200)
-
-  let messageSample = {
-    created_at: "2019-04-06T06:35:04Z",
-    id: 100131592,
-    parts: [{ content: "test double send?", type: "text/plain" }],
-    room_id: "19392918",
-    updated_at: "2019-04-06T06:35:04Z",
-    user_id: "zan"
-  }
 })
 
 //Login & user management for Chatkit

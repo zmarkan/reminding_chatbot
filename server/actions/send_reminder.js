@@ -11,7 +11,7 @@ module.exports = Task("SendReminderTask", {
     async handle(){
 
         const chatkit = new Chatkit.default({
-          instanceLocator: process.env.CHATKIT_INSTANCE_ID,
+          instanceLocator: process.env.CHATKIT_INSTANCE_LOCATOR,
           key: process.env.CHATKIT_KEY
         })
 
