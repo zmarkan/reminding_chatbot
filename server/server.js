@@ -48,7 +48,7 @@ app.post("/message", (req, res) => {
   const message = req.body.payload.messages[0]
   console.log(message)
 
-  if (
+  if ( //Parse reminder command and set up a new reminder
     message.user_id != "reminder_bot" &&
     message.parts[0].type === "text/plain" &&
     message.parts[0].content.startsWith("remind me ")
@@ -84,15 +84,12 @@ app.post("/message", (req, res) => {
           })
         })
     }
-  } else if (
+  } else if ( //Cancelation logic
     message.user_id != "reminder_bot" &&
     message.parts[0].type === "text/plain" &&
     message.parts[0].content.startsWith("cancel ")
   ) {
     const command = parseCancelCmd(message.parts[0].content)
-
-    console.log(message.parts[0].content)
-    console.log(command)
 
     RemindWorkflow.whereId(command.reminderId)
       .kill()

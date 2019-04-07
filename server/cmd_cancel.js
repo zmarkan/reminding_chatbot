@@ -7,7 +7,5 @@ module.exports = command => {
     parsed.reminderId = cancelAndReminderId[1]
   }
 
-  console.log(parsed)
-
   return parsed
 }
