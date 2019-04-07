@@ -22,11 +22,10 @@ See the demo here:
 - `cd server` and `npm install`
 - From the [Zenaton dashboard](https://zenaton.com/app/api) copy over the Application ID and API token into `.env`
 - From the [Chatkit dashboard](https://dash.pusher.com/chatkit) copy over the Instance Locator and Key into `.env`
-- Run `npm start`
-- In a separate terminal tab, run `ngrok http 4000`.
-Once Ngrok starts up, copy the URL it gives you (it should be in the format of: http://a9e16858.ngrok.io). Keep the terminal with ngrok running.
-- Paste the URL into the Settings tab in the Chatkit dashboard - to create a new webhook - make sure to append `/message` to the end of the URL, and make the webhook handle the `Message Created` event.
-Once 
+- Run `npm start` to start the server.
+- Now it's time to set up a webhook the bot. In a separate terminal tab, run `ngrok http 4000`.
+Once Ngrok starts up, copy the URL it gives you (it should look similar to http://a9e16858.ngrok.io). Keep the terminal with ngrok running.
+- Paste the URL from Ngrok into the webhook section of Settings tab of the Chatkit dashboard to create a new webhook - make sure to append `/message` to the end of the URL, and make the webhook handle the `Message Created` event. See the screenshot for reference.
 
 ![Adding a webhook](https://i.imgur.com/tc5jxI0.png)
 
