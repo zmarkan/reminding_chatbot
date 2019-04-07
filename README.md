@@ -5,6 +5,10 @@ An example chatbot 🤖showcasing a "remind me" feature - similar to the one in 
 Under the hood it uses [Zenaton](https://zenaton.com) to manage long running reminders, and [Pusher Chatkit](https://pusher.com/chatkit) to run the chat application.
 The web client is made in React, and the server is made with Node and Express.
 
+See the demo here:
+
+![Demo GIF](https://i.imgur.com/MiBNNy4.gif)
+
 ## Prerequisites for running the demo
 
 - A reasonably recent versions of Node and NPM. Node version 8.12 or above  should work fine.
