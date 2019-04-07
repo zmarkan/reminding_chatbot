@@ -64,7 +64,7 @@ app.post("/message", (req, res) => {
 
       console.log(reminderDetails)
 
-      new RemindWorkflow(reminderDetails, chatkit)
+      new RemindWorkflow(reminderDetails)
         .dispatch()
         .then(() => {
           chatkit.sendSimpleMessage({
