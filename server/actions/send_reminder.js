@@ -3,9 +3,8 @@ const Chatkit = require("@pusher/chatkit-server")
 
 module.exports = Task("SendReminderTask", {
 
-    init(reminderDetails, chatkit){
+    init(reminderDetails){
         this.reminderDetails = reminderDetails
-        this.chatkit = chatkit
     },
 
     async handle(){

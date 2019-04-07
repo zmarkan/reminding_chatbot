@@ -2,9 +2,8 @@ const { Workflow, Wait } = require("zenaton")
 const SendReminder = require("../actions/send_reminder")
 
 module.exports = Workflow("remind_workflow", {
-  init(reminderDetails, chatkit) {
+  init(reminderDetails) {
     this.reminderDetails = reminderDetails
-    this.chatkit = chatkit
   },
 
   async handle() {
@@ -12,7 +11,6 @@ module.exports = Workflow("remind_workflow", {
 
     await new SendReminder(
       this.reminderDetails,
-      this.chatkit
     ).execute()
   },
 
