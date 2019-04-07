@@ -52,7 +52,6 @@ app.post("/message", (req, res) => {
     message.parts[0].type === "text/plain" &&
     message.parts[0].content.startsWith("remind me ")
   ) {
-
     const command = parseCmd(message.parts[0].content)
     if (command.duration >= 0) {
       const reminderDetails = {
@@ -73,6 +72,33 @@ app.post("/message", (req, res) => {
             text: `Excellent! I scheduled your reminder! You can cancel it at any time by messaging cancel ${
               reminderDetails.messageId
             }!`
+          })
+        })
+        .catch(error => {
+          console.log(error)
+          chatkit.sendSimpleMessage({
+            roomId: this.reminderDetails.roomId,
+            userId: "reminder_bot",
+            text: `Oh no! Something terrible has happened!`
+          })
+        })
+    }
+    if (
+      message.user_id != "reminder_bot" &&
+      message.parts[0].type === "text/plain" &&
+      message.parts[0].content.startsWith("cancel ")
+    ) {
+      const command = parseCancelationCmd(message.parts[0].content)
+
+      RemindWorkflow.whereId(command.messageId)
+        .kill()
+        .then(() => {
+          chatkit.sendSimpleMessage({
+            roomId: this.reminderDetails.roomId,
+            userId: "reminder_bot",
+            text: `Sure thing! found your reminder with ID ${
+              command.messageId
+            } and canceled it!`
           })
         })
         .catch(error => {
