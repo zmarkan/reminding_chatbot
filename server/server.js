@@ -5,6 +5,7 @@ const bodyParser = require("body-parser")
 const cors = require("cors")
 const Chatkit = require("@pusher/chatkit-server")
 const parseCmd = require("./cmd_parser")
+const parseCancelCmd = require("./cmd_cancel")
 const { Client } = require("zenaton")
 const RemindWorkflow = require("./workflows/remind_workflow")
 
@@ -83,40 +84,42 @@ app.post("/message", (req, res) => {
           })
         })
     }
-    if (
-      message.user_id != "reminder_bot" &&
-      message.parts[0].type === "text/plain" &&
-      message.parts[0].content.startsWith("cancel ")
-    ) {
-      const command = parseCancelationCmd(message.parts[0].content)
+  } else if (
+    message.user_id != "reminder_bot" &&
+    message.parts[0].type === "text/plain" &&
+    message.parts[0].content.startsWith("cancel ")
+  ) {
+    const command = parseCancelCmd(message.parts[0].content)
 
-      RemindWorkflow.whereId(command.messageId)
-        .kill()
-        .then(() => {
-          chatkit.sendSimpleMessage({
-            roomId: this.reminderDetails.roomId,
-            userId: "reminder_bot",
-            text: `Sure thing! found your reminder with ID ${
-              command.messageId
-            } and canceled it!`
-          })
+    console.log(message.parts[0].content)
+    console.log(command)
+
+    RemindWorkflow.whereId(command.reminderId)
+      .kill()
+      .then(() => {
+        chatkit.sendSimpleMessage({
+          roomId: message.room_id,
+          userId: "reminder_bot",
+          text: `Sure thing! found your reminder with ID ${
+            command.reminderId
+          } and canceled it!`
         })
-        .catch(error => {
-          console.log(error)
-          chatkit.sendSimpleMessage({
-            roomId: this.reminderDetails.roomId,
-            userId: "reminder_bot",
-            text: `Oh no! Something terrible has happened!`
-          })
-        })
-    } else {
-      chatkit.sendSimpleMessage({
-        roomId: message.room_id,
-        userId: "reminder_bot",
-        text:
-          "Bleep, blop - I don't yet know how to help with that! Try saying 'remind me to {do something} in {number} seconds/minutes/days!"
       })
-    }
+      .catch(error => {
+        console.log(error)
+        chatkit.sendSimpleMessage({
+          roomId: message.room_id,
+          userId: "reminder_bot",
+          text: `Oh no! Something terrible has happened!`
+        })
+      })
+  } else if (message.user_id != "reminder_bot") {
+    chatkit.sendSimpleMessage({
+      roomId: message.room_id,
+      userId: "reminder_bot",
+      text:
+        "Bleep, blop - I don't yet know how to help with that! Try saying 'remind me to {do something} in {number} seconds/minutes/days!"
+    })
   }
 
   res.sendStatus(200)
