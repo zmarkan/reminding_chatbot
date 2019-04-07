@@ -7,7 +7,7 @@ The web client is made in React, and the server is made with Node and Express.
 
 See the demo here:
 
-![Demo GIF](https://i.imgur.com/MiBNNy4.gif)
+![Demo GIF](https://i.imgur.com/lunosMG.gif)
 
 ## Prerequisites for running the demo
 
